@@ -26,7 +26,10 @@ public class SCOSEntry extends AppCompatActivity {
         myLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SCOSEntry.this,MainScreen.class));
+                String strFromEntry = "FromEntry";
+                Intent intent = new Intent(SCOSEntry.this,MainScreen.class);
+                intent.putExtra("fromEntry",strFromEntry);
+                startActivity(intent);
             }
         });
     }
