@@ -8,10 +8,11 @@
 
 
     <com.ashokvarma.bottomnavigation.BottomNavigationBar
-        app:bnbMode="mode_fixed"
+        android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/bottom_navigation_bar"/>
+        app:bnbActiveColor="#932A90"
+        app:bnbMode="mode_fixed" />
 
 </RelativeLayout>

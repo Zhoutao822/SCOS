@@ -54,7 +54,11 @@ public class MainScreen extends AppCompatActivity {
             //选中 -> 选中
             @Override
             public void onTabReselected(int position) {
-
+                switch (position) {
+                    case 0:
+                        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.order, "new")).initialise();
+                        break;
+                }
             }
         });
 

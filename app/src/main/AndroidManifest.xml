@@ -7,7 +7,7 @@
         android:name="scos.permission.ACCESSSCOS"
         android:protectionLevel="dangerous" />
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <!-- To auto-complete the userName text field in the login form with the user's userNames -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
