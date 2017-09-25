@@ -3,6 +3,7 @@ package es.source.code.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -11,6 +12,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainScreen extends AppCompatActivity {
+
+    private static final int RESULT_BACK = 228;
 
     @BindView(R.id.bottom_navigation_bar)
     BottomNavigationBar bottomNavigationBar;
@@ -40,7 +43,8 @@ public class MainScreen extends AppCompatActivity {
             public void onTabSelected(int position) {
             switch(position){
                 case 2:
-                    startActivity(new Intent(MainScreen.this,LoginOrRegister.class));
+                    Intent intent2 =new Intent(MainScreen.this,LoginOrRegister.class);
+                    startActivityForResult(intent2,1);
                     break;
                 default:
                     break;
@@ -55,12 +59,32 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onTabReselected(int position) {
                 switch (position) {
-                    case 0:
-                        bottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.order, "new")).initialise();
+                    case 2:
+                        Intent intent2 =new Intent(MainScreen.this,LoginOrRegister.class);
+                        startActivityForResult(intent2,1);
                         break;
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 1:
+                if(resultCode==RESULT_OK){
+
+                    String returnData=data.getStringExtra("fromLoginSuccess");
+                    Log.i("fromlogin",returnData);
+
+                }else if(resultCode==RESULT_BACK){
+                    String returnData=data.getStringExtra("fromLoginReturn");
+                    Log.i("fromlogin",returnData);
+                }
+        }
+
 
     }
 }

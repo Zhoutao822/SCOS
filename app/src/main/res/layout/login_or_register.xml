@@ -57,13 +57,22 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:id="@+id/progressbar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_gravity="center_horizontal"/>
+
             <Button
                 android:id="@+id/userName_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
+                android:layout_gravity="bottom"
                 android:textStyle="bold" />
 
         </LinearLayout>

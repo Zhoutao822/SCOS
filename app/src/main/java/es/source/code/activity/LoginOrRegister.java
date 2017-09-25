@@ -3,7 +3,9 @@ package es.source.code.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
+    private static final int RESULT_BACK = 228;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -59,6 +62,8 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
     // UI references.
     private AutoCompleteTextView mUserNameView;
     private EditText mPasswordView;
+    private ProgressBar mProgressBar;
+    private TextView mBack;
 
 
     @Override
@@ -68,6 +73,18 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.userName);
         populateAutoComplete();
+        mProgressBar= (ProgressBar) findViewById(R.id.progressbar);
+        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        mBack= (TextView) findViewById(R.id.back);
+        mBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentBack =new Intent();
+                intentBack.putExtra("fromLoginReturn","Return");
+                setResult(RESULT_BACK,intentBack);
+                finish();
+            }
+        });
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -146,6 +163,8 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
             return;
         }
 
+
+
         // Reset errors.
         mUserNameView.setError(null);
         mPasswordView.setError(null);
@@ -187,8 +206,34 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            mProgressBar.setVisibility(ProgressBar.VISIBLE);
+            new Thread(){
+                @Override
+                public void run() {
+                    int i=0;
+                    while(i<100){
+                        i++;
+                        try {
+                            Thread.sleep(20);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        mProgressBar.setProgress(i);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                        }
+                    });
+                }
+            }.start();
+            Intent intentLogin=new Intent();
+            intentLogin.putExtra("fromLoginSuccess","LoginSuccess");
+            setResult(RESULT_OK,intentLogin);
             mAuthTask = new UserLoginTask(userName, password);
             mAuthTask.execute((Void) null);
+
         }
     }
 
