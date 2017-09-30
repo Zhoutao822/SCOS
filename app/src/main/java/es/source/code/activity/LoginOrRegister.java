@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 
@@ -46,7 +49,10 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    private static final int RESULT_BACK = 228;
+
+    //set resultCode for onActivityResult() for MainScreen.java
+    private static final int RETURN = 228;
+    private static final int SUCCESS = 229;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -60,33 +66,39 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mUserNameView;
-    private EditText mPasswordView;
-    private ProgressBar mProgressBar;
-    private TextView mBack;
+    @BindView(R.id.userName)
+    AutoCompleteTextView mUserNameView;
 
+    @BindView(R.id.progressbar)
+    ProgressBar mProgressBar;
+
+    @BindView(R.id.back)
+    TextView mBack;
+
+    @BindView(R.id.password)
+    EditText mPasswordView;
+
+    @BindView(R.id.userName_sign_in_button)
+    Button mUserNameSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_or_register);
+        ButterKnife.bind(this);
         // Set up the login form.
-        mUserNameView = (AutoCompleteTextView) findViewById(R.id.userName);
         populateAutoComplete();
-        mProgressBar= (ProgressBar) findViewById(R.id.progressbar);
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-        mBack= (TextView) findViewById(R.id.back);
         mBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentBack =new Intent();
-                intentBack.putExtra("fromLoginReturn","Return");
-                setResult(RESULT_BACK,intentBack);
+                Intent intentBack = new Intent();
+                intentBack.putExtra("fromLogin", "Return");
+                setResult(RETURN, intentBack);
                 finish();
             }
         });
 
-        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -98,7 +110,6 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
             }
         });
 
-        Button mUserNameSignInButton = (Button) findViewById(R.id.userName_sign_in_button);
         mUserNameSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +120,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
 
     }
 
+    //auto complete for username
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -162,9 +174,6 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         if (mAuthTask != null) {
             return;
         }
-
-
-
         // Reset errors.
         mUserNameView.setError(null);
         mPasswordView.setError(null);
@@ -177,24 +186,23 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         View focusView = null;
 
 
-
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required),null);
+            mPasswordView.setError(getString(R.string.error_field_required), null);
             focusView = mPasswordView;
             cancel = true;
         } else if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_content),null);
+            mPasswordView.setError(getString(R.string.error_invalid_content), null);
             focusView = mPasswordView;
             cancel = true;
         }
         // Check for a valid userName address.
         if (TextUtils.isEmpty(userName)) {
-            mUserNameView.setError(getString(R.string.error_field_required),null);
+            mUserNameView.setError(getString(R.string.error_field_required), null);
             focusView = mUserNameView;
             cancel = true;
         } else if (!isPasswordValid(userName)) {
-            mUserNameView.setError(getString(R.string.error_invalid_content),null);
+            mUserNameView.setError(getString(R.string.error_invalid_content), null);
             focusView = mUserNameView;
             cancel = true;
         }
@@ -207,11 +215,11 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
-                    int i=0;
-                    while(i<100){
+                    int i = 0;
+                    while (i < 100) {
                         i++;
                         try {
                             Thread.sleep(20);
@@ -228,9 +236,9 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
                     });
                 }
             }.start();
-            Intent intentLogin=new Intent();
-            intentLogin.putExtra("fromLoginSuccess","LoginSuccess");
-            setResult(RESULT_OK,intentLogin);
+            Intent intentLogin = new Intent();
+            intentLogin.putExtra("fromLogin", "LoginSuccess");
+            setResult(SUCCESS, intentLogin);
             mAuthTask = new UserLoginTask(userName, password);
             mAuthTask.execute((Void) null);
 

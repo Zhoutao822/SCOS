@@ -21,6 +21,16 @@ android {
     }
     productFlavors {
     }
+    applicationVariants.all {variant ->
+        variant.outputs.each {output ->
+            def outputFile = output.outputFile
+            def fileName
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                fileName = "SCOS1.0.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
 }
 
 dependencies {

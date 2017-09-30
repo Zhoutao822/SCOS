@@ -32,11 +32,13 @@
                 <action android:name="scos.intent.action.SCOSMAIN" />
 
                 <category android:name="scos.intent.category.SCOSLAUNCHER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginOrRegister"
-            android:label="@string/title_activity_login_or_register"></activity>
+            android:label="@string/title_activity_login_or_register" />
     </application>
 
 </manifest>
