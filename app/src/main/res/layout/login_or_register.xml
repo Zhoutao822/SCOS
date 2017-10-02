@@ -10,14 +10,19 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar_default" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon"
+        android:padding="20dp"/>
 
     <ScrollView
-        android:paddingTop="180dp"
         android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingLeft="26dp"
         android:paddingRight="26dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:id="@+id/userName_login_form"
@@ -58,21 +63,21 @@
             </android.support.design.widget.TextInputLayout>
 
             <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="13dp"
-                android:paddingRight="13dp"
                 android:id="@+id/progressbar"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp" />
 
             <Button
                 android:id="@+id/userName_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action_sign_in"
                 android:layout_gravity="bottom"
+                android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
         </LinearLayout>

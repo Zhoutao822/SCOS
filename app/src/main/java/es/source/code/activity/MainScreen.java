@@ -31,25 +31,33 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
         ButterKnife.bind(this);
-        Intent intent = getIntent();
-        String strFromEntry = intent.getStringExtra("fromEntry");
-
+        String strFromEntry = "check";
 
         addFourItems();
 
-        if (!strFromEntry.equals("FromEntry")) {
-            bottomNavigationBar.removeItem(orderItem)
-                    .removeItem(checkItem)
-                    .initialise();
-            FLAG = 2;
+        try {
+            Intent intent = getIntent();
+            strFromEntry = intent.getStringExtra("fromEntry");
+            if (!strFromEntry.equals("FromEntry")) {
+                bottomNavigationBar.removeItem(orderItem)
+                        .removeItem(checkItem)
+                        .initialise();
+                FLAG = 2;
+            }
+        } catch (Exception e) {
+            Log.i("intent error", "str is:" + strFromEntry);
         }
+
+
+
+
 
 
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             //未选中 -> 选中
             public void onTabSelected(int position) {
-              itemSelected(position);
+                itemSelected(position);
             }
 
             //选中 -> 未选中
@@ -61,7 +69,7 @@ public class MainScreen extends AppCompatActivity {
             //选中 -> 选中
             @Override
             public void onTabReselected(int position) {
-               itemSelected(position);
+                itemSelected(position);
             }
         });
     }
@@ -75,7 +83,7 @@ public class MainScreen extends AppCompatActivity {
                     String returnData = data.getStringExtra("fromLogin");
                     Log.i("fromlogin", returnData);
                     if (returnData.equals("LoginSuccess")) {
-                       addFourItems();
+                        addFourItems();
                     }
 
 
@@ -96,7 +104,7 @@ public class MainScreen extends AppCompatActivity {
         FLAG = 4;
     }
 
-    private void itemSelected(int position){
+    private void itemSelected(int position) {
         if (FLAG == 4) {
             switch (position) {
                 case 2:
