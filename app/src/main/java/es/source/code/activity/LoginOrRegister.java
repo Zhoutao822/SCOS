@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -39,6 +40,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.source.code.model.User;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -58,7 +60,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "zhoutao:123456", "admin:123"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -80,6 +82,9 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
 
     @BindView(R.id.userName_sign_in_button)
     Button mUserNameSignInButton;
+
+    @BindView(R.id.userName_register_button)
+    Button mUserNameRegisterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +121,12 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
                 attemptLogin();
             }
         });
-
+        mUserNameRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptRegister();
+            }
+        });
 
     }
 
@@ -170,47 +180,19 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
      * If there are form errors (invalid userName, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+
+
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
         }
-        // Reset errors.
-        mUserNameView.setError(null);
-        mPasswordView.setError(null);
-
         // Store values at the time of the login attempt.
         String userName = mUserNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-
-        // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required), null);
-            focusView = mPasswordView;
-            cancel = true;
-        } else if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_content), null);
-            focusView = mPasswordView;
-            cancel = true;
-        }
-        // Check for a valid userName address.
-        if (TextUtils.isEmpty(userName)) {
-            mUserNameView.setError(getString(R.string.error_field_required), null);
-            focusView = mUserNameView;
-            cancel = true;
-        } else if (!isPasswordValid(userName)) {
-            mUserNameView.setError(getString(R.string.error_invalid_content), null);
-            focusView = mUserNameView;
-            cancel = true;
-        }
-
-        if (cancel) {
+        if (checkInput()) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -236,15 +218,70 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
                     });
                 }
             }.start();
-            Intent intentLogin = new Intent();
-            intentLogin.putExtra("fromLogin", "LoginSuccess");
-            setResult(SUCCESS, intentLogin);
             mAuthTask = new UserLoginTask(userName, password);
             mAuthTask.execute((Void) null);
+        }
+    }
+    private void attemptRegister(){
+        // Store values at the time of the login attempt.
+        String userName = mUserNameView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        if (checkInput()){
 
+        }else {
+            User loginUser = new User();
+            loginUser.setOldUser(false);
+            loginUser.setUserName(userName);
+            loginUser.setPassword(password);
+            Intent intentRegister = new Intent();
+            intentRegister.putExtra("fromLogin", "RegisterSuccess");
+            Bundle bundleRegister = new Bundle();
+            bundleRegister.putSerializable("userModel",loginUser);
+            intentRegister.putExtras(bundleRegister);
+            setResult(SUCCESS, intentRegister);
+            finish();
         }
     }
 
+    //checkInput() is to check the username and password's format
+    private boolean checkInput(){
+        boolean checkResult = false;
+        // Reset errors.
+        mUserNameView.setError(null);
+        mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String userName = mUserNameView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required), null);
+            focusView = mPasswordView;
+            checkResult = true;
+        } else if (!isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_content), null);
+            focusView = mPasswordView;
+            checkResult = true;
+        }
+        // Check for a valid userName address.
+        if (TextUtils.isEmpty(userName)) {
+            mUserNameView.setError(getString(R.string.error_field_required), null);
+            focusView = mUserNameView;
+            checkResult = true;
+        } else if (!isPasswordValid(userName)) {
+            mUserNameView.setError(getString(R.string.error_invalid_content), null);
+            focusView = mUserNameView;
+            checkResult = true;
+        }
+        if (checkResult){
+            focusView.requestFocus();
+        }
+
+        return checkResult;
+    }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
@@ -325,7 +362,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            boolean flag = false;
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -333,16 +370,15 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
                 return false;
             }
 
+
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUserName)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                if (pieces[0].equals(mUserName) && pieces[1].equals(mPassword)) {
+                    flag = true;
                 }
             }
-
             // TODO: register the new account here.
-            return true;
+            return flag;
         }
 
         @Override
@@ -350,6 +386,16 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
             mAuthTask = null;
 
             if (success) {
+                User loginUser = new User();
+                loginUser.setUserName(mUserName);
+                loginUser.setPassword(mPassword);
+                loginUser.setOldUser(true);
+                Intent intentLogin = new Intent();
+                intentLogin.putExtra("fromLogin", "LoginSuccess");
+                Bundle bundleLogin = new Bundle();
+                bundleLogin.putSerializable("userModel",loginUser);
+                intentLogin.putExtras(bundleLogin);
+                setResult(SUCCESS, intentLogin);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
