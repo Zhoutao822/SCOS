@@ -88,6 +88,9 @@ public class MainScreen extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (FLAG == 4) {
                     switch (position) {
+                        case 0:
+                            startActivity(new Intent(MainScreen.this,FoodView.class));
+                            break;
                         case 2:
                             Intent intent2 = new Intent(MainScreen.this, LoginOrRegister.class);
                             startActivityForResult(intent2, 1);
@@ -153,11 +156,10 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String returnData = data.getStringExtra("fromLogin");
         switch (requestCode) {
             case 1:
                 if (resultCode == SUCCESS) {
-
+                    String returnData = data.getStringExtra("fromLogin");
                     Log.i("fromlogin", returnData+user.getUserName());
                     if (returnData.equals("LoginSuccess")) {
 //                        addFourItems();
@@ -178,6 +180,7 @@ public class MainScreen extends AppCompatActivity {
                     }
 
                 } else if (resultCode == RETURN) {
+                    String returnData = data.getStringExtra("fromLogin");
                     Log.i("fromlogin", returnData);
                 }
         }
