@@ -66,7 +66,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
+    private User loginUser = null;
     // UI references.
     @BindView(R.id.userName)
     AutoCompleteTextView mUserNameView;
@@ -229,7 +229,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         if (checkInput()){
 
         }else {
-            User loginUser = new User();
+            loginUser = new User();
             loginUser.setOldUser(false);
             loginUser.setUserName(userName);
             loginUser.setPassword(password);

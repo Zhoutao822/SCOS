@@ -2,17 +2,13 @@ package es.source.code.fragment;
 
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import es.source.code.activity.BaseFragment;
-import es.source.code.activity.R;
+import es.source.code.base.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,19 +16,5 @@ import es.source.code.activity.R;
 public class HasOrderFragment extends BaseFragment {
 
 
-    @Override
-    protected void loadData() {
-        Toast.makeText(mContext,"已下单菜",Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected View initView() {
-        TextView mView = new TextView(mContext);
-        mView.setText("Fragment已下单菜");
-        mView.setGravity(Gravity.CENTER);
-        mView.setTextSize(18);
-        mView.setTextColor(Color.BLACK);
-        return mView;
-    }
 
 }

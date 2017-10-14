@@ -1,9 +1,8 @@
-package es.source.code.activity;
-
-import android.util.Log;
+package es.source.code.base;
 
 import java.util.HashMap;
 
+import es.source.code.base.BaseFragment;
 import es.source.code.fragment.ColdFoodFragment;
 import es.source.code.fragment.DrinkFragment;
 import es.source.code.fragment.HasOrderFragment;

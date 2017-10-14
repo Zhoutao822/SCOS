@@ -1,4 +1,4 @@
-package es.source.code.activity;
+package es.source.code.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,16 +24,5 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        loadData();
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
-        return initView();
-    }
-
-    protected abstract void loadData();
-
-    protected abstract View initView();
-
 }

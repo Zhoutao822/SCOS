@@ -3,6 +3,7 @@ package es.source.code.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -21,7 +22,6 @@ public class SCOSEntry extends AppCompatActivity {
 
     private GestureDetector gestureDetector;
     private GestureDetector.OnGestureListener onGestureListener = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
