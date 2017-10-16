@@ -11,13 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.source.code.adapter.ViewPagerAdapter;
 import es.source.code.model.User;
 
-public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenuItemClickListener{
+public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenuItemClickListener {
 
     //set resultCode for onActivityResult() in MainScreen.java
     private static final int RETURN = 228;
@@ -53,7 +54,7 @@ public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenu
         toolbarTitle.setText("点菜");
 
         mActionMenuView.getMenu().clear();
-        getMenuInflater().inflate(R.menu.toolbar_menu,mActionMenuView.getMenu());
+        getMenuInflater().inflate(R.menu.toolbar_menu, mActionMenuView.getMenu());
         mActionMenuView.setOnMenuItemClickListener(this);
 
         mBack.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +71,7 @@ public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenu
             user = (User) getIntent().getSerializableExtra("userFromMainScreen");
         }
     }
+
     private void initData() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), TITLE);
         mViewPager.setAdapter(adapter);
@@ -81,12 +83,24 @@ public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenu
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.item_hasOrdered:
-
+                Intent intent1 = new Intent(FoodView.this,FoodOrderView.class);
+                Bundle bundle1 = new Bundle();
+                if (user != null) {
+                    bundle1.putSerializable("userModule", user);
+                }
+                intent1.putExtras(bundle1);
+                startActivity(intent1);
                 break;
             case R.id.item_checkOrder:
-
+                Intent intent2 = new Intent(FoodView.this,FoodOrderView.class);
+                Bundle bundle2 = new Bundle();
+                if (user != null) {
+                    bundle2.putSerializable("userModule", user);
+                }
+                intent2.putExtras(bundle2);
+                startActivity(intent2);
                 break;
             case R.id.item_call:
 

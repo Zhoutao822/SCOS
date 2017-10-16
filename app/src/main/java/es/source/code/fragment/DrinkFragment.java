@@ -20,6 +20,7 @@ import java.util.Map;
 import es.source.code.activity.R;
 import es.source.code.adapter.ListViewAdapter;
 import es.source.code.base.BaseFragment;
+import es.source.code.model.Food;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,26 +29,26 @@ public class DrinkFragment extends BaseFragment {
 
     private ListView listView;
     private String[] foodName = {"可乐","雪碧","橙汁","啤酒","二锅头","椰子汁"};
-    private String[] foodPrice = {"10","10","10","8","20","15"};
+    private int[] foodPrice = {10,10,10,8,20,15};
+    private int[] foodQuantity = {1,1,1,1,1,1};
+    private int[] imageID = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher,
+            R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher };
+    private String[] foodInfo = {"味道偏咸", "凉菜", "爽口", "清热解火", "脆", "富含纤维素"};
+    private List<Food> foodList;
+    private Food drink ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment, container, false);
         listView = (ListView) view.findViewById(R.id.listview);
-        List<Map<String, Object>> list = getData();
-        listView.setAdapter(new ListViewAdapter(getActivity(), list));
+
+        foodList= loadData(foodList,foodName,foodPrice,foodQuantity,imageID,foodInfo);
+
+
+        listView.setAdapter(new ListViewAdapter(getActivity(), foodList));
         return view;
     }
 
-    public List<Map<String, Object>> getData() {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for (int i = 0; i < foodName.length; i++) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("foodName", foodName[i]);
-            map.put("foodPrice", foodPrice[i]);
-            list.add(map);
-        }
-        return list;
-    }
+
 
 }
