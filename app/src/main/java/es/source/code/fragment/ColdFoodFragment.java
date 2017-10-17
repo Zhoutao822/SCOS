@@ -1,5 +1,6 @@
 package es.source.code.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,11 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import es.source.code.activity.FoodDetailed;
 import es.source.code.activity.R;
 import es.source.code.adapter.ListViewAdapter;
 import es.source.code.base.BaseFragment;
@@ -51,6 +54,11 @@ public class ColdFoodFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("item click","position:"+position+" view:"+view.getId()+" id:"+id);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("foodList", (Serializable) foodList);
+        Intent intentDetail = new Intent(getActivity(), FoodDetailed.class);
+        intentDetail.putExtras(bundle);
+        intentDetail.putExtra("position",position+"");
+        startActivity(intentDetail);
     }
 }

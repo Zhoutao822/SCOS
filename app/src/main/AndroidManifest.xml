@@ -31,12 +31,12 @@
             android:permission="scos.permission.ACCESSSCOS">
             <intent-filter>
                 <action android:name="scos.intent.action.SCOSMAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="scos.intent.category.SCOSLAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginOrRegister">
+        <activity android:name=".LoginOrRegister">
             <intent-filter>
                 <action android:name="scos.intent.action.LOGIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -44,7 +44,10 @@
         </activity>
         <activity android:name=".FoodView" />
         <activity android:name=".FoodOrderView" />
-        <activity android:name=".FoodDetailed"/>
+        <activity
+            android:name=".FoodDetailed"
+            android:label=""
+            android:theme="@style/DialogStyle" />
     </application>
 
 </manifest>

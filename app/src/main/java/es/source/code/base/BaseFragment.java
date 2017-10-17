@@ -1,6 +1,7 @@
 package es.source.code.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,19 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import es.source.code.activity.FoodDetailed;
 import es.source.code.model.Food;
 
 /**
  * Created by zhoutao on 2017/10/12.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements AdapterView.OnItemClickListener{
     protected Context mContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,5 +52,13 @@ public abstract class BaseFragment extends Fragment {
         }
         return foodList;
     }
-
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("foodList", (Serializable) foodList);
+//        Intent intentDetail = new Intent(getActivity(), FoodDetailed.class);
+//        intentDetail.putExtras(bundle);
+//        intentDetail.putExtra("position",position+"");
+//        startActivity(intentDetail);
+//    }
 }

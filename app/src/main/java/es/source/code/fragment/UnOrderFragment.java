@@ -1,6 +1,7 @@
 package es.source.code.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
+import es.source.code.activity.FoodDetailed;
 import es.source.code.activity.R;
 import es.source.code.adapter.HasOrderedListAdapter;
 import es.source.code.adapter.UnorderListAdapter;
@@ -46,7 +49,12 @@ public class UnOrderFragment extends BaseFragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("foodList", (Serializable) foodList);
+        Intent intentDetail = new Intent(getActivity(), FoodDetailed.class);
+        intentDetail.putExtras(bundle);
+        intentDetail.putExtra("position",position+"");
+        startActivity(intentDetail);
     }
 
 }

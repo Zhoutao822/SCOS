@@ -108,8 +108,6 @@ public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenu
             default:
                 break;
         }
-
-
         return false;
     }
 }

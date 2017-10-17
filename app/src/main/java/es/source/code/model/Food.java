@@ -1,10 +1,12 @@
 package es.source.code.model;
 
+import java.io.Serializable;
+
 /**
  * Created by zhoutao on 2017/10/13.
  */
 
-public class Food {
+public class Food implements Serializable{
     String foodName;
     int foodPrice;
     int foodQuantity;
