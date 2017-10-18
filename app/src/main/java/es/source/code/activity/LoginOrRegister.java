@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -75,7 +76,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
     ProgressBar mProgressBar;
 
     @BindView(R.id.back)
-    TextView mBack;
+    ImageView mBack;
 
     @BindView(R.id.password)
     EditText mPasswordView;

@@ -18,21 +18,6 @@ import es.source.code.model.Food;
 public class FoodDetailed extends AppCompatActivity {
 
     private List<Food> foodList;
-    private int position;
-//    @BindView(R.id.food_detail_image)
-//    ImageView foodDetailImage;
-//
-//    @BindView(R.id.food_detail_name)
-//    TextView foodDetailName;
-//
-//    @BindView(R.id.food_detail_price)
-//    TextView foodDetailPrice;
-//
-//    @BindView(R.id.food_detail_info)
-//    TextView foodDetailInfo;
-//
-//    @BindView(R.id.send_info)
-//    Button sendInfo;
 
     @BindView(R.id.food_detail_viewpager)
     ViewPager foodViewPager;
@@ -43,11 +28,6 @@ public class FoodDetailed extends AppCompatActivity {
         setContentView(R.layout.food_detail_viewpager);
         ButterKnife.bind(this);
         foodList = (List<Food>) getIntent().getSerializableExtra("foodList");
-        position = Integer.parseInt(getIntent().getStringExtra("position"));
         foodViewPager.setAdapter(new DetailViewPagerAdapter(this,foodList));
-//        foodDetailName.setText(foodList.get(position).getFoodName());
-//        foodDetailPrice.setText(String.valueOf(foodList.get(position).getFoodPrice()));
-//        foodDetailInfo.setText(foodList.get(position).getFoodInfo());
-//        foodDetailImage.setImageResource(foodList.get(position).getImageID());
     }
 }

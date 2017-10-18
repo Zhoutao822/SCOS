@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import es.source.code.model.User;
 public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenuItemClickListener {
 
     //set resultCode for onActivityResult() in MainScreen.java
+
     private static final int RETURN = 228;
     private static final int SUCCESS = 229;
 
@@ -44,7 +46,7 @@ public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenu
     ViewPager mViewPager;
 
     @BindView(R.id.back)
-    TextView mBack;
+    ImageView mBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +74,13 @@ public class FoodView extends AppCompatActivity implements ActionMenuView.OnMenu
         }
     }
 
+//        setOffscreenPageLimit() is the reason why ViewPagerAdapter.getItem() run twice
+//        fragment will be loaded before it is put on screen
+
     private void initData() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), TITLE);
         mViewPager.setAdapter(adapter);
-//        setOffscreenPageLimit() is the reason why ViewPagerAdapter.getItem() run twice
-//        fragment will be loaded before it is put on screen
-//        mViewPager.setOffscreenPageLimit(3);
+
         mTab.setupWithViewPager(mViewPager);
     }
 

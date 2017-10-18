@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ public class FoodOrderView extends AppCompatActivity {
     ViewPager mViewPager;
 
     @BindView(R.id.back)
-    TextView mBack;
+    ImageView mBack;
 
     @BindView(R.id.total_food_price)
     TextView totalPrice;
@@ -77,13 +78,12 @@ public class FoodOrderView extends AppCompatActivity {
             }
         });
     }
+//    setOffscreenPageLimit() is the reason why ViewPagerAdapter.getItem() run twice
+//    fragment will be loaded before it is put on screen
 
     private void initData() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), TITLE);
         mViewPager.setAdapter(adapter);
-//        setOffscreenPageLimit() is the reason why ViewPagerAdapter.getItem() run twice
-//        fragment will be loaded before it is put on screen
-//        mViewPager.setOffscreenPageLimit(3);
         mTab.setupWithViewPager(mViewPager);
     }
 
