@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.source.code.activity.MainScreen">
+    tools:context="es.source.code.activity.SCOSHelper">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_default" />
 
     <GridView
-        android:id="@+id/gridview"
+        android:id="@+id/help_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:columnWidth="100dp"
+        android:layout_height="360dp"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="5dp"
+        android:columnWidth="180dp"
         android:gravity="center"
-        android:horizontalSpacing="30dp"
+        android:horizontalSpacing="10dp"
         android:numColumns="auto_fit"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:padding="10dp"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="30dp" />
-
+        android:verticalSpacing="5dp" />
 </RelativeLayout>

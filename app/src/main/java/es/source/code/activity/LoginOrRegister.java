@@ -3,7 +3,9 @@ package es.source.code.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -68,6 +70,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
      */
     private UserLoginTask mAuthTask = null;
     private User loginUser = null;
+    private SharedPreferences mSharedPreferences;
     // UI references.
     @BindView(R.id.userName)
     AutoCompleteTextView mUserNameView;
@@ -98,12 +101,27 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         mBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mSharedPreferences.contains("userName")){
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putInt("loginState",0);
+                    editor.apply();
+                }
                 Intent intentBack = new Intent();
                 intentBack.putExtra("fromLogin", "Return");
+                Bundle bundle = new Bundle();
+                intentBack.putExtras(bundle);
                 setResult(RETURN, intentBack);
                 finish();
             }
         });
+
+        mSharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        if (!mSharedPreferences.contains("userName")){
+            mUserNameSignInButton.setVisibility(View.INVISIBLE);
+        }else {
+            mUserNameRegisterButton.setVisibility(View.INVISIBLE);
+            mUserNameView.setText(mSharedPreferences.getString("userName",""));
+        }
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -160,6 +178,21 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
             requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mSharedPreferences.contains("userName")){
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putInt("loginState",0);
+            editor.apply();
+        }
+        Intent intentBack = new Intent();
+        intentBack.putExtra("fromLogin", "Return");
+        Bundle bundle = new Bundle();
+        intentBack.putExtras(bundle);
+        setResult(RETURN, intentBack);
+        super.onBackPressed();
     }
 
     /**
@@ -227,17 +260,22 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
         // Store values at the time of the login attempt.
         String userName = mUserNameView.getText().toString();
         String password = mPasswordView.getText().toString();
-        if (checkInput()){
-
-        }else {
+        if (!checkInput()){
             loginUser = new User();
             loginUser.setOldUser(false);
             loginUser.setUserName(userName);
             loginUser.setPassword(password);
+
             Intent intentRegister = new Intent();
             intentRegister.putExtra("fromLogin", "RegisterSuccess");
             Bundle bundleRegister = new Bundle();
             bundleRegister.putSerializable("userModel",loginUser);
+
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putString("userName",userName);
+            editor.putInt("loginState",1);
+            editor.apply();
+
             intentRegister.putExtras(bundleRegister);
             setResult(SUCCESS, intentRegister);
             finish();
@@ -395,6 +433,12 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
                 intentLogin.putExtra("fromLogin", "LoginSuccess");
                 Bundle bundleLogin = new Bundle();
                 bundleLogin.putSerializable("userModel",loginUser);
+
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString("userName",mUserName);
+                editor.putInt("loginState",1);
+                editor.apply();
+
                 intentLogin.putExtras(bundleLogin);
                 setResult(SUCCESS, intentLogin);
                 finish();
@@ -403,6 +447,7 @@ public class LoginOrRegister extends AppCompatActivity implements LoaderCallback
                 mPasswordView.requestFocus();
             }
         }
+
 
         @Override
         protected void onCancelled() {

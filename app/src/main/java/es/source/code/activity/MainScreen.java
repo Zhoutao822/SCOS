@@ -1,6 +1,8 @@
 package es.source.code.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +24,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.source.code.model.User;
 
-public class MainScreen extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class MainScreen extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
 
     //RETURN and SUCCESS are resultCode for onActivityResult
     private static final int RETURN = 228;
     private static final int SUCCESS = 229;
+
+    SharedPreferences mSharedPreference;
+    int mLoginState;
 
     @BindView(R.id.gridview)
     GridView myGridView;
@@ -42,10 +47,10 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemC
 
     private String strFromEntry = "check";
     private User user = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main_screen);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -54,17 +59,17 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemC
         getData();
         mySimpleAdapter = new SimpleAdapter(this, dataList, R.layout.gridview_item, from, to);
         myGridView.setAdapter(mySimpleAdapter);
-        
+
         try {
-            Intent intent = getIntent();
-            strFromEntry = intent.getStringExtra("fromEntry");
-            if (!strFromEntry.equals("FromEntry")) {
+            mSharedPreference = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+            mLoginState = mSharedPreference.getInt("loginState", -1);
+            if (mLoginState != 1) {
                 dataList.remove(1);
                 dataList.remove(0);
                 mySimpleAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
-            Log.i("intent error", "str is:" + strFromEntry);
+            Log.i("intent error", "str is:" + mLoginState);
         }
         myGridView.setOnItemClickListener(this);
     }
@@ -86,30 +91,34 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemC
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         user = new User();
+        mLoginState = getSharedPreferences("UserInfo",Context.MODE_PRIVATE).getInt("loginState",-1);
         switch (requestCode) {
             case 1:
-                if (resultCode == SUCCESS) {
+                if (mLoginState == 1) {
                     String returnData = data.getStringExtra("fromLogin");
-                    Log.i("fromlogin", returnData+user.getUserName());
+                    Log.i("fromlogin", returnData + user.getUserName());
                     if (returnData.equals("LoginSuccess")) {
                         dataList.clear();
                         getData();
                         mySimpleAdapter.notifyDataSetChanged();
                         user = (User) data.getSerializableExtra("userModel");
-                    }else if (returnData.equals("RegisterSuccess")){
+                    } else if (returnData.equals("RegisterSuccess")) {
                         dataList.clear();
                         getData();
                         mySimpleAdapter.notifyDataSetChanged();
                         user = (User) data.getSerializableExtra("userModel");
-                        Toast.makeText(this,"欢迎您成为SCOS新用户",Toast.LENGTH_SHORT).show();
-                    }else {
+                        Toast.makeText(this, "欢迎您成为SCOS新用户", Toast.LENGTH_SHORT).show();
+                    } else {
                         user = null;
                     }
 
-                } else if (resultCode == RETURN) {
+                } else {
                     String returnData = data.getStringExtra("fromLogin");
                     Log.i("fromlogin", returnData);
                 }
+                break;
+            default:
+                break;
         }
     }
 
@@ -118,19 +127,19 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemC
         if (dataList.size() == 4) {
             switch (position) {
                 case 0:
-                    Intent intentOrder = new Intent(MainScreen.this,FoodView.class);
-                    if (user!=null){
+                    Intent intentOrder = new Intent(MainScreen.this, FoodView.class);
+                    if (user != null) {
                         Bundle bundleOrder = new Bundle();
-                        bundleOrder.putSerializable("userFromMainScreen",user);
+                        bundleOrder.putSerializable("userFromMainScreen", user);
                         intentOrder.putExtras(bundleOrder);
                     }
                     startActivity(intentOrder);
                     break;
                 case 1:
-                    Intent intentCheck = new Intent(MainScreen.this,FoodOrderView.class);
-                    if (user!=null){
+                    Intent intentCheck = new Intent(MainScreen.this, FoodOrderView.class);
+                    if (user != null) {
                         Bundle bundleCheck = new Bundle();
-                        bundleCheck.putSerializable("userFromMainScreen",user);
+                        bundleCheck.putSerializable("userFromMainScreen", user);
                         intentCheck.putExtras(bundleCheck);
                     }
                     startActivity(intentCheck);
@@ -140,6 +149,8 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemC
                     startActivityForResult(intentLogin, 1);
                     break;
                 case 3:
+                    Intent intentHelp = new Intent(MainScreen.this,SCOSHelper.class);
+                    startActivity(intentHelp);
                     break;
                 default:
                     break;
@@ -147,10 +158,12 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemC
         } else if (dataList.size() == 2) {
             switch (position) {
                 case 0:
-                    Intent intent2 = new Intent(MainScreen.this, LoginOrRegister.class);
-                    startActivityForResult(intent2, 1);
+                    Intent intentLogin = new Intent(MainScreen.this, LoginOrRegister.class);
+                    startActivityForResult(intentLogin, 1);
                     break;
                 case 1:
+                    Intent intentHelp = new Intent(MainScreen.this,SCOSHelper.class);
+                    startActivity(intentHelp);
                     break;
                 default:
                     break;
