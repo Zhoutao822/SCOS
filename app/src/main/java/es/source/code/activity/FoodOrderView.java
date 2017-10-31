@@ -73,7 +73,7 @@ public class FoodOrderView extends AppCompatActivity {
         if (getIntent() != null) {
             user = (User) getIntent().getSerializableExtra("userFromMainScreen");
         }
-//// TODO: 2017/10/23 不可以点击两次结账，会报错
+//// TODO: 2017/10/23 不可以点击两次结账？，会报错
 
         totalPrice.setText("总计:" + String.valueOf(114));
         totalQuantity.setText("菜品总数:" + String.valueOf(6));

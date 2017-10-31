@@ -39,6 +39,7 @@ public class ListViewAdapter extends BaseAdapter {
     private final class FoodView {
         private TextView foodName;
         private TextView foodPrice;
+        private TextView foodInventory;
         private Button btnOrder;
         private TextView foodInfo;
         private TextView foodQuantity;
@@ -67,6 +68,7 @@ public class ListViewAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.list_food_item, null);
             foodView.foodName = (TextView) convertView.findViewById(R.id.food_item_name);
             foodView.foodPrice = (TextView) convertView.findViewById(R.id.food_item_price);
+            foodView.foodInventory = (TextView) convertView.findViewById(R.id.foodInventory);
             foodView.btnOrder = (Button) convertView.findViewById(R.id.food_item_select_btn);
             convertView.setTag(foodView);
         } else {
@@ -74,6 +76,7 @@ public class ListViewAdapter extends BaseAdapter {
         }
         foodView.foodName.setText(data.get(position).getFoodName());
         foodView.foodPrice.setText(String.valueOf(data.get(position).getFoodPrice()));
+        //foodView.foodInventory.setText(data.get(position).getFoodInventory());
         final FoodView finalFoodView = foodView;
         foodView.btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override

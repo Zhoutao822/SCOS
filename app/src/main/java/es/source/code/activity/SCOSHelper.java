@@ -125,11 +125,10 @@ public class SCOSHelper extends AppCompatActivity implements AdapterView.OnItemC
             @Override
             public void run() {
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setType("text/plain");
-                //emailIntent.setType("message/rfc822");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{"info@skillgun.com"});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT,"标题");
-                emailIntent.putExtra(Intent.EXTRA_TEXT,"HELP");
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{"zhoutao822@icloud.com"});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT,"这是标题");
+                emailIntent.putExtra(Intent.EXTRA_TEXT,"这是内容");
                 startActivity(Intent.createChooser(emailIntent,"Choose an Email Client"));
                 handler.sendEmptyMessage(1);
             }

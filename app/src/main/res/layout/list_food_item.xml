@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/food_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:id="@+id/food_item">
+    android:orientation="horizontal">
 
 
     <TextView
         android:id="@+id/food_item_name"
+        style="@style/ItemStyle"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="菜名"
-        style="@style/ItemStyle"/>
+        android:text="菜名" />
 
     <TextView
         android:id="@+id/food_item_price"
+        style="@style/ItemStyle"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
+        android:text="10" />
+
+    <TextView
+        style="@style/ItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="库存:" />
+
+    <TextView
+        android:id="@+id/foodInventory"
+        style="@style/ItemStyle"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
         android:text="10"
-        style="@style/ItemStyle" />
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/food_item_select_btn"
+        style="@style/ItemStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.6"
-        android:gravity="center"
-        android:text="点菜"
-        style="@style/ItemStyle"
+        android:clickable="true"
         android:focusable="false"
-        android:clickable="true"/>
+        android:gravity="center"
+        android:text="点菜" />
 </LinearLayout>

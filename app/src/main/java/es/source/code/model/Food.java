@@ -10,7 +10,9 @@ public class Food implements Serializable{
     String foodName;
     int foodPrice;
     int foodQuantity;
+    int foodInventory;
     int imageID;
+
     String foodInfo;
 
     public Food(){
@@ -63,5 +65,12 @@ public class Food implements Serializable{
 
     public void setFoodInfo(String foodInfo) {
         this.foodInfo = foodInfo;
+    }
+    public int getFoodInventory() {
+        return foodInventory;
+    }
+
+    public void setFoodInventory(int foodInventory) {
+        this.foodInventory = foodInventory;
     }
 }
